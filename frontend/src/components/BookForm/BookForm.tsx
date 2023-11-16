@@ -3,24 +3,31 @@ import { useAppDispatch, useAppSelector } from '../../hook';
 import { v4 as uuidv4 } from 'uuid';
 import { addNewBook } from '../../redux/booksSlice/booksSlice';
 import booksData from '../../data/books.json';
+import { Book } from '../../redux/booksSlice/booksSlice';
 import './BookForm.scss';
+
+interface BookFromJson {
+    title: string;
+    author: string;
+    year: number;
+}
 
 export const BookForm: React.FC = () => {
     const [title, setTitle] = useState<string>('');
     const [author, setAuthor] = useState<string>('');
 
     const dispatch = useAppDispatch();
-    const getBookFromState = useAppSelector((state) => state.booksLibrary.books);
+    const getBooksFromState: Book[] = useAppSelector((state) => state.booksLibrary.books);
 
-    const handleAddRandomBook = () => {
+    const handleAddRandomBook = (): void => {
         const getRandomBookFromData = () => {
-            const randomIndex = Math.floor(Math.random() * booksData.length);
+            const randomIndex: number = Math.floor(Math.random() * booksData.length);
             return booksData[randomIndex];
         };
-        const getBook = getRandomBookFromData();
-        const checkForSameBook = getBookFromState.filter((book) => book.title === getBook.title);
+        const getBook: BookFromJson = getRandomBookFromData();
+        const checkForSameBook: Book[] = getBooksFromState.filter((book) => book.title === getBook.title);
         if (checkForSameBook.length === 0) {
-            const newRandomBook = {
+            const newRandomBook: Book = {
                 id: uuidv4(),
                 title: getBook.title,
                 author: getBook.author,
@@ -28,7 +35,6 @@ export const BookForm: React.FC = () => {
 
             dispatch(addNewBook(newRandomBook));
         } else {
-            console.log('Same book was catch!');
             handleAddRandomBook();
         }
     };
