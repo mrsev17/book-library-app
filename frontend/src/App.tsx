@@ -1,4 +1,4 @@
-import { BookForm, BookList } from './components';
+import { BookForm, BookList, Filter } from './components';
 import './App.scss';
 
 function App() {
@@ -12,7 +12,7 @@ function App() {
                     <BookForm />
                 </div>
                 <div className='app-right-column'>
-                    {/* <Filter /> */}
+                    <Filter />
                     <BookList />
                 </div>
             </main>

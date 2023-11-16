@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { useAppDispatch } from '../../hook';
+import { useAppDispatch, useAppSelector } from '../../hook';
 import { v4 as uuidv4 } from 'uuid';
 import { addNewBook } from '../../redux/booksSlice/booksSlice';
+import booksData from '../../data/books.json';
 import './BookForm.scss';
 
 export const BookForm: React.FC = () => {
@@ -9,6 +10,28 @@ export const BookForm: React.FC = () => {
     const [author, setAuthor] = useState<string>('');
 
     const dispatch = useAppDispatch();
+    const getBookFromState = useAppSelector((state) => state.booksLibrary.books);
+
+    const handleAddRandomBook = () => {
+        const getRandomBookFromData = () => {
+            const randomIndex = Math.floor(Math.random() * booksData.length);
+            return booksData[randomIndex];
+        };
+        const getBook = getRandomBookFromData();
+        const checkForSameBook = getBookFromState.filter((book) => book.title === getBook.title);
+        if (checkForSameBook.length === 0) {
+            const newRandomBook = {
+                id: uuidv4(),
+                title: getBook.title,
+                author: getBook.author,
+            };
+
+            dispatch(addNewBook(newRandomBook));
+        } else {
+            console.log('Same book was catch!');
+            handleAddRandomBook();
+        }
+    };
 
     const titleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value);
@@ -44,6 +67,9 @@ export const BookForm: React.FC = () => {
                     <input id='author' type='text' value={author} onChange={authorChange} />
                 </div>
                 <button type='submit'>Add Book</button>
+                <button type='button' onClick={handleAddRandomBook}>
+                    Add Random
+                </button>
             </form>
         </div>
     );
