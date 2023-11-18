@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hook';
-import { v4 as uuidv4 } from 'uuid';
-import { addNewBook } from '../../redux/booksSlice/booksSlice';
+import { setAddNewBook } from '../../redux/booksSlice/booksSlice';
 import booksData from '../../data/books.json';
 import { Book } from '../../redux/booksSlice/booksSlice';
+import createBookWithID from '../../utils/createBookWithID';
 import './BookForm.scss';
 
 interface BookFromJson {
@@ -17,7 +17,7 @@ export const BookForm: React.FC = () => {
     const [author, setAuthor] = useState<string>('');
 
     const dispatch = useAppDispatch();
-    const getBooksFromState: Book[] = useAppSelector((state) => state.booksLibrary.books);
+    const getBooksFromState: Book[] = useAppSelector((state) => state.books.books);
 
     const handleAddRandomBook = (): void => {
         const getRandomBookFromData = (): BookFromJson => {
@@ -27,12 +27,7 @@ export const BookForm: React.FC = () => {
         const getBook: BookFromJson = getRandomBookFromData();
         const checkForSameBook: Book[] = getBooksFromState.filter((book) => book.title === getBook.title);
         if (checkForSameBook.length === 0) {
-            const newRandomBook: Book = {
-                ...getBook,
-                isFavorite: false,
-                id: uuidv4(),
-            };
-            dispatch(addNewBook(newRandomBook));
+            dispatch(setAddNewBook(createBookWithID(getBook)));
         } else {
             handleAddRandomBook();
         }
@@ -48,13 +43,7 @@ export const BookForm: React.FC = () => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (title && author) {
-            const newBook = {
-                id: uuidv4(),
-                title: title,
-                author: author,
-                isFavorite: false,
-            };
-            dispatch(addNewBook(newBook));
+            dispatch(setAddNewBook(createBookWithID(createBookWithID({ title, author }))));
             setTitle('');
             setAuthor('');
         }
@@ -74,7 +63,7 @@ export const BookForm: React.FC = () => {
                 </div>
                 <button type='submit'>Add Book</button>
                 <button type='button' onClick={handleAddRandomBook}>
-                    Add Random
+                    Add Random Book
                 </button>
             </form>
         </div>

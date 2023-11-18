@@ -20,17 +20,17 @@ const booksSlice = createSlice({
     name: 'books',
     initialState,
     reducers: {
-        addNewBook(state, action: PayloadAction<Book>) {
+        setAddNewBook(state, action: PayloadAction<Book>) {
             state.books.push(action.payload);
         },
-        removeBook(state, action: PayloadAction<string>) {
+        setRemoveBook(state, action: PayloadAction<string>) {
             state.books = state.books.filter((book) => book.id !== action.payload);
         },
-        toggleFavorite(state, action: PayloadAction<string>) {
+        setToggleFavorite(state, action: PayloadAction<string>) {
             state.books = state.books.map((book) => (book.id === action.payload ? { ...book, isFavorite: !book.isFavorite } : book));
         },
     },
 });
 
-export const { addNewBook, removeBook, toggleFavorite } = booksSlice.actions;
+export const { setAddNewBook, setRemoveBook, setToggleFavorite } = booksSlice.actions;
 export default booksSlice.reducer;
