@@ -1,6 +1,7 @@
 import { useAppSelector, useAppDispatch } from '../../hook';
-import { removeBook } from '../../redux/booksSlice/booksSlice';
+import { removeBook, toggleFavorite } from '../../redux/booksSlice/booksSlice';
 import { Book } from '../../redux/booksSlice/booksSlice';
+import { BsBookmarkStar, BsBookmarkStarFill } from 'react-icons/bs';
 import './BookList.scss';
 
 export const BookList: React.FC = () => {
@@ -8,6 +9,9 @@ export const BookList: React.FC = () => {
     const books: Book[] = useAppSelector((state) => state.booksLibrary.books);
     const deleteHandle = (id: string): void => {
         dispatch(removeBook(id));
+    };
+    const favoriteBookHandle = (id: string) => {
+        dispatch(toggleFavorite(id));
     };
     return (
         <div className='app-block book-list'>
@@ -22,6 +26,9 @@ export const BookList: React.FC = () => {
                                 {++i}. {book.title} by <strong>{book.author}</strong>
                             </div>
                             <div className='book-actions'>
+                                <span onClick={() => favoriteBookHandle(book.id)}>
+                                    {book.isFavorite ? <BsBookmarkStarFill className='star-icon' /> : <BsBookmarkStar className='star-icon' />}
+                                </span>
                                 <button onClick={() => deleteHandle(book.id)}>Delete</button>
                             </div>
                         </li>

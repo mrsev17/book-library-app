@@ -20,7 +20,7 @@ export const BookForm: React.FC = () => {
     const getBooksFromState: Book[] = useAppSelector((state) => state.booksLibrary.books);
 
     const handleAddRandomBook = (): void => {
-        const getRandomBookFromData = () => {
+        const getRandomBookFromData = (): BookFromJson => {
             const randomIndex: number = Math.floor(Math.random() * booksData.length);
             return booksData[randomIndex];
         };
@@ -28,11 +28,10 @@ export const BookForm: React.FC = () => {
         const checkForSameBook: Book[] = getBooksFromState.filter((book) => book.title === getBook.title);
         if (checkForSameBook.length === 0) {
             const newRandomBook: Book = {
+                ...getBook,
+                isFavorite: false,
                 id: uuidv4(),
-                title: getBook.title,
-                author: getBook.author,
             };
-
             dispatch(addNewBook(newRandomBook));
         } else {
             handleAddRandomBook();
@@ -53,6 +52,7 @@ export const BookForm: React.FC = () => {
                 id: uuidv4(),
                 title: title,
                 author: author,
+                isFavorite: false,
             };
             dispatch(addNewBook(newBook));
             setTitle('');

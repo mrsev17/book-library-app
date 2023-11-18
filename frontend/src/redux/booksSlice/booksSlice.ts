@@ -4,6 +4,7 @@ export interface Book {
     title: string;
     author: string;
     id: string;
+    isFavorite: boolean;
     year?: number;
 }
 
@@ -25,8 +26,11 @@ const booksSlice = createSlice({
         removeBook(state, action: PayloadAction<string>) {
             state.books = state.books.filter((book) => book.id !== action.payload);
         },
+        toggleFavorite(state, action: PayloadAction<string>) {
+            state.books = state.books.map((book) => (book.id === action.payload ? { ...book, isFavorite: !book.isFavorite } : book));
+        },
     },
 });
 
-export const { addNewBook, removeBook } = booksSlice.actions;
+export const { addNewBook, removeBook, toggleFavorite } = booksSlice.actions;
 export default booksSlice.reducer;
