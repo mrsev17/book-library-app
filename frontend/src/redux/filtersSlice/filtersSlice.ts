@@ -7,11 +7,13 @@ interface RootState {
 interface FilterState {
     title: string;
     author: string;
+    onlyFavorite: boolean;
 }
 
 const initialState: FilterState = {
     title: '',
     author: '',
+    onlyFavorite: false,
 };
 
 const filtersSlice = createSlice({
@@ -24,7 +26,10 @@ const filtersSlice = createSlice({
         setAuthorFilter(state, action: PayloadAction<string>) {
             state.author = action.payload;
         },
-        resetFilters(state) {
+        setFavoriteFilter(state) {
+            state.onlyFavorite = !state.onlyFavorite;
+        },
+        resetFilters() {
             return initialState;
         },
     },
@@ -32,6 +37,7 @@ const filtersSlice = createSlice({
 
 export const selectTitleFilter = (state: RootState) => state.filter.title;
 export const selectAuthorFilter = (state: RootState) => state.filter.author;
+export const selectFavoriteFilter = (state: RootState) => state.filter.onlyFavorite;
 
-export const { setTitleFilter, setAuthorFilter, resetFilters } = filtersSlice.actions;
+export const { setTitleFilter, setAuthorFilter, setFavoriteFilter, resetFilters } = filtersSlice.actions;
 export default filtersSlice.reducer;

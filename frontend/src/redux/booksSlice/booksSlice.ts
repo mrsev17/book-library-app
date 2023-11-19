@@ -13,7 +13,29 @@ interface BooksState {
 }
 
 const initialState: BooksState = {
-    books: [],
+    books: [
+        {
+            title: 'Martin Eden',
+            author: 'Jack London',
+            id: '1',
+            isFavorite: true,
+            year: 1909,
+        },
+        {
+            title: 'To Kill a Mockingbird',
+            author: 'Harper Lee',
+            id: '2',
+            isFavorite: false,
+            year: 1960,
+        },
+        {
+            title: 'Of Mice and Men',
+            author: 'John Steinbeck',
+            id: '3',
+            isFavorite: false,
+            year: 1937,
+        },
+    ],
 };
 
 const booksSlice = createSlice({

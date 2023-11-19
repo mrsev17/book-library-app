@@ -4,7 +4,18 @@
     list-style: none;
 }
 
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
 .book-list li {
+    opacity: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -13,6 +24,7 @@
     border-bottom: 1px solid #ccc;
     background-color: #fff;
     list-style-type: none;
+    animation: fadeIn 0.2s ease-in-out 0.2s 1 forwards;
 }
 
 .book-list li:nth-child(even) {
