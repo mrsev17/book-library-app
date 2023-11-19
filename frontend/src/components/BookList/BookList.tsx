@@ -2,22 +2,25 @@ import { useAppSelector, useAppDispatch } from '../../hook';
 import { setRemoveBook, setToggleFavorite } from '../../redux/booksSlice/booksSlice';
 import { Book } from '../../redux/booksSlice/booksSlice';
 import { BsBookmarkStar, BsBookmarkStarFill } from 'react-icons/bs';
-import { selectTitleFilter } from '../../redux/filtersSlice/filtersSlice';
+import { selectTitleFilter, selectAuthorFilter } from '../../redux/filtersSlice/filtersSlice';
+import { AppDispatch } from '../../redux/store';
 import './BookList.scss';
 
 export const BookList: React.FC = () => {
-    const dispatch = useAppDispatch();
+    const dispatch: AppDispatch = useAppDispatch();
     const books: Book[] = useAppSelector((state) => state.books.books);
     const titleFilter: string = useAppSelector(selectTitleFilter);
+    const authorFilter: string = useAppSelector(selectAuthorFilter);
     const deleteHandle = (id: string): void => {
         dispatch(setRemoveBook(id));
     };
-    const favoriteBookHandle = (id: string) => {
+    const favoriteBookHandle = (id: string): void => {
         dispatch(setToggleFavorite(id));
     };
-    const filteredBooks: Book[] = books.filter((book: any) => {
+    const filteredBooks: Book[] = books.filter((book: Book) => {
         const matchesTitle: boolean = book.title.toLowerCase().includes(titleFilter.toLowerCase());
-        return matchesTitle;
+        const matchesAuthor: boolean = book.author.toLowerCase().includes(authorFilter.toLowerCase());
+        return matchesTitle && matchesAuthor;
     });
     return (
         <div className='app-block book-list'>
