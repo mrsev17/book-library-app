@@ -1,8 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-interface RootState {
-    filter: FilterState;
-}
+import { RootState } from '../store';
 
 interface FilterState {
     title: string;

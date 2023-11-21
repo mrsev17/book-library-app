@@ -4,6 +4,7 @@ import { setAddNewBook, fetchBook } from '../../redux/booksSlice/booksSlice';
 import booksData from '../../data/books.json';
 import { Book } from '../../redux/booksSlice/booksSlice';
 import createBookWithID from '../../utils/createBookWithID';
+import { setError } from '../../redux/errorSlice/errorSlice';
 import './BookForm.scss';
 
 export interface BookFromJson {
@@ -46,6 +47,8 @@ export const BookForm: React.FC = () => {
             dispatch(setAddNewBook(createBookWithID({ title, author }, 'manual')));
             setTitle('');
             setAuthor('');
+        } else {
+            dispatch(setError('You must fill title and author'));
         }
     };
 

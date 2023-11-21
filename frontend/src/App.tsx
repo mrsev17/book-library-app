@@ -1,4 +1,5 @@
-import { BookForm, BookList, Filter } from './components';
+import { BookForm, BookList, Filter, Error } from './components';
+
 import './App.scss';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
                     <BookList />
                 </div>
             </main>
+            <Error />
         </div>
     );
 }

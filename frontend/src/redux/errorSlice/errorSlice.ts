@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { RootState } from '../store';
 
 interface ErrorInitState {
     error: string;
 }
 
 const initialState: ErrorInitState = {
-    error: 'unknown error',
+    error: '',
 };
 
 const errorSlice = createSlice({
@@ -13,7 +14,7 @@ const errorSlice = createSlice({
     initialState,
     reducers: {
         setError: (state, action) => {
-            return action.payload;
+            state.error = action.payload;
         },
         clearError: () => {
             return initialState;
@@ -21,6 +22,7 @@ const errorSlice = createSlice({
     },
 });
 
+export const selectErrorMessage = (state: RootState) => state.errors.error;
+
 export const { setError, clearError } = errorSlice.actions;
-export const selectErrorMessage = (state: ErrorInitState) => state.error;
 export default errorSlice.reducer;
