@@ -2,10 +2,16 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import createBookWithID from '../../utils/createBookWithID';
+import { setError } from '../errorSlice/errorSlice';
 
-export const fetchBook = createAsyncThunk('books/fetchBook', async () => {
-    const res = await axios.get('http://localhost:4000/random-book');
-    return res.data;
+export const fetchBook = createAsyncThunk('books/fetchBook', async (url: string, thunkAPI) => {
+    try {
+        const res = await axios.get(url);
+        return res.data;
+    } catch (error: any) {
+        thunkAPI.dispatch(setError(error.message));
+        throw error;
+    }
 });
 
 export interface Book {
