@@ -6,9 +6,10 @@ interface createBook {
     title: string;
     author: string;
 }
-const createBookWithID = (book: createBook): Book => {
+const createBookWithID = (book: createBook, source: string): Book => {
     return {
         ...book,
+        source,
         isFavorite: false,
         id: uuidv4(),
     };

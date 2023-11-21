@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hook';
-import { setAddNewBook } from '../../redux/booksSlice/booksSlice';
+import { setAddNewBook, fetchBook } from '../../redux/booksSlice/booksSlice';
 import booksData from '../../data/books.json';
 import { Book } from '../../redux/booksSlice/booksSlice';
 import createBookWithID from '../../utils/createBookWithID';
-import axios from 'axios';
 import './BookForm.scss';
 
-interface BookFromJson {
+export interface BookFromJson {
     title: string;
     author: string;
     year: number;
@@ -28,7 +27,7 @@ export const BookForm: React.FC = () => {
         const getBook: BookFromJson = getRandomBookFromData();
         const checkForSameBook: Book[] = getBooksFromState.filter((book) => book.title === getBook.title);
         if (checkForSameBook.length === 0) {
-            dispatch(setAddNewBook(createBookWithID(getBook)));
+            dispatch(setAddNewBook(createBookWithID(getBook, 'random')));
         } else {
             handleAddRandomBook();
         }
@@ -44,26 +43,14 @@ export const BookForm: React.FC = () => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (title && author) {
-            dispatch(setAddNewBook(createBookWithID(createBookWithID({ title, author }))));
+            dispatch(setAddNewBook(createBookWithID({ title, author }, 'manual')));
             setTitle('');
             setAuthor('');
         }
     };
 
-    const handleAddRandomBookViaAPI = async () => {
-        try {
-            const res = await axios.get('http://localhost:4000/random-book');
-            if (res?.data?.title && res?.data?.author && res?.data?.year) {
-                const dataNewBook: BookFromJson = {
-                    title: res.data.title,
-                    author: res.data.author,
-                    year: res.data.year,
-                };
-                dispatch(setAddNewBook(createBookWithID(dataNewBook)));
-            }
-        } catch (error) {
-            console.error('Error fetching random book', error);
-        }
+    const handleAddRandomBookViaAPI = () => {
+        dispatch(fetchBook());
     };
 
     return (
