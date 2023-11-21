@@ -10,7 +10,8 @@ export const fetchBook = createAsyncThunk('books/fetchBook', async (url: string,
         const res = await axios.get(url);
         return res.data;
     } catch (error: any) {
-        thunkAPI.dispatch(setError(error.message));
+        thunkAPI.dispatch(setError('Currently unavailable'));
+        // thunkAPI.dispatch(setError(error.message));
         return thunkAPI.rejectWithValue(error);
     }
 });

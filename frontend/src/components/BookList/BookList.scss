@@ -1,73 +1,75 @@
-.book-list ul {
-    padding: 0;
-    margin: 20px -20px;
-    list-style: none;
-}
+.book-list {
+    ul {
+        padding: 0;
+        margin: 20px -20px;
+        list-style: none;
+    }
 
-@keyframes fadeIn {
-    0% {
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+
+    li {
         opacity: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: auto;
+        padding: 10px 20px;
+        border-bottom: 1px solid #ccc;
+        background-color: #fff;
+        list-style-type: none;
+        animation: fadeIn 0.2s ease-in-out 0.2s 1 forwards;
+
+        &:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        &:hover {
+            background-color: #dbe4f8;
+        }
+
+        button {
+            background-color: #fff;
+            color: red;
+            border: 1px solid red;
+            padding: 8px 12px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+
+            &:hover {
+                background-color: #fdd;
+            }
+        }
+
+        &.highlight {
+            background-color: #ff0;
+        }
+
+        .book-info {
+            flex: 1;
+            text-align: left;
+        }
+
+        .book-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .star-icon {
+            width: 30px;
+            height: 30px;
+            margin: 0 10px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            color: #4597d6;
+        }
     }
-
-    100% {
-        opacity: 1;
-    }
-}
-
-.book-list li {
-    opacity: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: auto;
-    padding: 10px 20px;
-    border-bottom: 1px solid #ccc;
-    background-color: #fff;
-    list-style-type: none;
-    animation: fadeIn 0.2s ease-in-out 0.2s 1 forwards;
-}
-
-.book-list li:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-.book-list li:hover {
-    background-color: #dbe4f8;
-}
-
-.book-list button {
-    background-color: #fff;
-    color: red;
-    border: 1px solid red;
-    padding: 8px 12px;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.book-list button:hover {
-    background-color: #fdd;
-}
-
-.book-list .highlight {
-    background-color: #ff0;
-}
-
-.book-list .book-info {
-    flex: 1;
-    text-align: left;
-}
-
-.book-list .book-actions {
-    display: flex;
-    align-items: center;
-}
-
-.book-list .star-icon {
-    width: 30px;
-    height: 30px;
-    margin: 0 10px;
-    cursor: pointer;
-    transition: color 0.3s ease;
-    color: #4597d6;
 }
