@@ -1,6 +1,6 @@
 import { useAppSelector, useAppDispatch } from '../../hook';
 import { setRemoveBook, setToggleFavorite } from '../../redux/booksSlice/booksSlice';
-import { Book } from '../../redux/booksSlice/booksSlice';
+import { Book, selectBooks } from '../../redux/booksSlice/booksSlice';
 import { BsBookmarkStar, BsBookmarkStarFill } from 'react-icons/bs';
 import { selectTitleFilter, selectAuthorFilter, selectFavoriteFilter } from '../../redux/filtersSlice/filtersSlice';
 import { AppDispatch } from '../../redux/store';
@@ -9,7 +9,7 @@ import './BookList.scss';
 export const BookList: React.FC = () => {
     const dispatch: AppDispatch = useAppDispatch();
 
-    const books: Book[] = useAppSelector((state) => state.books.books);
+    const books: Book[] = useAppSelector(selectBooks);
     const titleFilter: string = useAppSelector(selectTitleFilter);
     const authorFilter: string = useAppSelector(selectAuthorFilter);
     const favoriteBooksFilter: boolean = useAppSelector(selectFavoriteFilter);

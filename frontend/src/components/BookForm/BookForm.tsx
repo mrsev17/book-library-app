@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hook';
 import { setAddNewBook, fetchBook } from '../../redux/booksSlice/booksSlice';
 import booksData from '../../data/books.json';
-import { Book } from '../../redux/booksSlice/booksSlice';
+import { Book, selectBooks } from '../../redux/booksSlice/booksSlice';
 import { FaSpinner } from 'react-icons/fa';
 import createBookWithID from '../../utils/createBookWithID';
 import { setError } from '../../redux/errorSlice/errorSlice';
+import { selectLoadingViaAPI } from '../../redux/booksSlice/booksSlice';
 import './BookForm.scss';
 
 export interface BookFromJson {
@@ -18,10 +19,9 @@ export const BookForm: React.FC = () => {
     const [title, setTitle] = useState<string>('');
     const [author, setAuthor] = useState<string>('');
 
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-
     const dispatch = useAppDispatch();
-    const getBooksFromState: Book[] = useAppSelector((state) => state.books.books);
+    const getBooksFromState: Book[] = useAppSelector(selectBooks);
+    const loaderViaAPI: boolean = useAppSelector(selectLoadingViaAPI);
 
     const handleAddRandomBook = (): void => {
         const getRandomBookFromData = (): BookFromJson => {
@@ -55,13 +55,8 @@ export const BookForm: React.FC = () => {
         }
     };
 
-    const handleAddRandomBookViaAPI = async () => {
-        try {
-            setIsLoading(true);
-            await dispatch(fetchBook('http://localhost:4000/random-book-delay'));
-        } finally {
-            setIsLoading(false);
-        }
+    const handleAddRandomBookViaAPI = () => {
+        dispatch(fetchBook('http://localhost:4000/random-book-delay'));
     };
 
     return (
@@ -69,11 +64,11 @@ export const BookForm: React.FC = () => {
             <h2>Add New Book</h2>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label htmlFor='title'>Title: </label>
+                    <label htmlFor='title'>Title:</label>
                     <input id='title' type='text' value={title} onChange={titleChange} />
                 </div>
                 <div>
-                    <label htmlFor='author'>Author: </label>
+                    <label htmlFor='author'>Author:</label>
                     <input id='author' type='text' value={author} onChange={authorChange} />
                 </div>
                 <button type='submit'>Add Book</button>
@@ -81,14 +76,14 @@ export const BookForm: React.FC = () => {
                     Add Random Book
                 </button>
 
-                <button disabled={isLoading} type='button' onClick={handleAddRandomBookViaAPI}>
-                    {isLoading ? (
+                <button disabled={loaderViaAPI} type='button' onClick={handleAddRandomBookViaAPI}>
+                    {loaderViaAPI ? (
                         <>
                             <span>Loading Book...</span>
                             <FaSpinner className='spinner' />
                         </>
                     ) : (
-                        ' Add Random via API'
+                        'Add Random via API'
                     )}
                 </button>
             </form>

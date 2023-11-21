@@ -3,6 +3,7 @@ import axios from 'axios';
 import { ActionReducerMapBuilder } from '@reduxjs/toolkit';
 import createBookWithID from '../../utils/createBookWithID';
 import { setError } from '../errorSlice/errorSlice';
+import { RootState } from '../store';
 
 export const fetchBook = createAsyncThunk('books/fetchBook', async (url: string, thunkAPI) => {
     try {
@@ -10,7 +11,7 @@ export const fetchBook = createAsyncThunk('books/fetchBook', async (url: string,
         return res.data;
     } catch (error: any) {
         thunkAPI.dispatch(setError(error.message));
-        throw error;
+        return thunkAPI.rejectWithValue(error);
     }
 });
 
@@ -25,6 +26,7 @@ export interface Book {
 
 interface BooksState {
     books: Book[];
+    isLoadingViaAPI: boolean;
 }
 
 const initialState: BooksState = {
@@ -54,6 +56,7 @@ const initialState: BooksState = {
             source: 'manual',
         },
     ],
+    isLoadingViaAPI: false,
 };
 
 const booksSlice = createSlice({
@@ -71,13 +74,24 @@ const booksSlice = createSlice({
         },
     },
     extraReducers: (builder: ActionReducerMapBuilder<BooksState>) => {
-        builder.addCase(fetchBook.fulfilled, (state, action) => {
-            if (action.payload.title && action.payload.author) {
-                state.books.push(createBookWithID(action.payload, 'API'));
-            }
-        });
+        builder
+            .addCase(fetchBook.pending, (state) => {
+                state.isLoadingViaAPI = true;
+            })
+            .addCase(fetchBook.fulfilled, (state, action) => {
+                state.isLoadingViaAPI = false;
+                if (action?.payload?.title && action?.payload?.author) {
+                    state.books.push(createBookWithID(action.payload, 'API'));
+                }
+            })
+            .addCase(fetchBook.rejected, (state) => {
+                state.isLoadingViaAPI = false;
+            });
     },
 });
+
+export const selectBooks = (state: RootState) => state.books.books;
+export const selectLoadingViaAPI = (state: RootState) => state.books.isLoadingViaAPI;
 
 export const { setAddNewBook, setRemoveBook, setToggleFavorite } = booksSlice.actions;
 
