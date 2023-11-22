@@ -16,7 +16,7 @@
     }
 
     li {
-        opacity: 0;
+        opacity: 1;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -25,7 +25,7 @@
         border-bottom: 1px solid #ccc;
         background-color: #fff;
         list-style-type: none;
-        animation: fadeIn 0.2s ease-in-out 0.2s 1 forwards;
+        // animation: fadeIn 0.2s ease-in-out 0.2s 1 forwards;
 
         &:nth-child(even) {
             background-color: #f2f2f2;
