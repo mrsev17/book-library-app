@@ -1,2 +1,1 @@
-npm i
-npm start
+Deploy version: https://khukalenko-book-library-app.netlify.app/
